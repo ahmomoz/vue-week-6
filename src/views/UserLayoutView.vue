@@ -11,7 +11,7 @@
             <RouterLink to="/" class="nav-link active">首頁</RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink to="/adminLogin" class="nav-link">後台</RouterLink>
+            <RouterLink to="/admin" class="nav-link">後台</RouterLink>
           </li>
           <li class="nav-item">
             <RouterLink to="/products" class="nav-link">前台產品列表</RouterLink>

@@ -16,6 +16,9 @@
           <li class="nav-item">
             <RouterLink to="/admin/order" class="nav-link">後台訂單列表</RouterLink>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" @click.prevent="signOut">登出</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -27,6 +30,34 @@
 
 <script>
 export default {
+  methods: {
+    checkAdmin () { // 檢驗身分函式
+      // 取得token，檢查是否已有token紀錄
+      const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
+        '$1')
+      this.$axios.defaults.headers.common.Authorization = `${token}`
+      if (token) {
+        this.$axios.post(`${import.meta.env.VITE_API_URL}/api/user/check`, { api_token: this.token })
+          .then(res => {
+            this.$router.push('/admin') // 有token自動跳轉
+          })
+          .catch(() => {
+            this.$Swal.fire('身分驗證錯誤，跳轉至登入頁')
+            this.$router.push('/adminLogin') // 跳轉至登入頁
+          })
+      } else {
+        this.$router.push('/adminLogin')
+      }
+    },
+    signOut () {
+      this.$Swal.fire('已登出')
+      document.cookie = 'hexToken=;expires=;'
+      this.$router.push('/adminLogin')
+    }
+  },
+  mounted () {
+    this.checkAdmin()
+  }
 }
 </script>
 
